@@ -7,8 +7,13 @@ This app use [Vite]('https://vitejs.dev/') to scaffold react app for faster deve
 To start the development server, navigate into your project directory using the command line, and enter the following command:
 
 ```
+pnpm run dev
+```
+or
+```
 npm run dev
 ```
+
 
 This will start the development server in your default browser.
 
@@ -16,6 +21,10 @@ This will start the development server in your default browser.
 
 Once you have completed your project, you can build it for production using this command:
 
+```
+pnpm run build
+```
+or
 ```
 npm run build
 ```
