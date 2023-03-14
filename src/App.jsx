@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import "./styles/App.css";
 import Card from "./components/Card";
 import Navbar from "./components/Navbar";
-import Pagination from "./components/Pagination";
 import Carousel from "./components/Carousel";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 import { XSOLLA_API } from "../constants/apis";
@@ -39,6 +38,7 @@ function App() {
         }
       })
       .then((data) => {
+        console.log(data.items)
         setData(data.items);
         const images = data.items.slice(0, 4).map((item) => item.image_url);
         setCarouselImages([...images]);
