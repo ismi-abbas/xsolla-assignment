@@ -1,17 +1,46 @@
 import { useState, useEffect } from "react";
-import "./App.css";
-import Card from "./Card";
+import "./styles/App.css";
+import Card from "./components/Card";
+import Navbar from "./components/Navbar";
+import Pagination from "./components/Pagination";
+import Carousel from "./components/Carousel";
 
 const API_URL =
   "https://store.xsolla.com/api/v2/project/36867/items/game?locale=en";
 
 function App() {
   const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(16);
+  const [carouselImages, setCarouselImages] = useState([]);
 
-  const fetchData = async () => {
-    const response = await fetch(API_URL);
-    const slicedData = (await response.json()).items.slice(0, 44);
-    setData(slicedData);
+  const totalPages = Math.ceil(data.length / itemsPerPage);
+
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const itemsToDisplay = data.slice(startIndex, endIndex);
+
+  const fetchData = () => {
+    fetch(API_URL)
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then((data) => {
+        setData(data.items.slice(0, 44));
+        const images = data.items.slice(0, 4).map((item) => item.image_url);
+        setCarouselImages([...images]);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -19,12 +48,14 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-purple-800 w-screen h-auto">
+    <div className="bg-purple-800 h-auto p-10">
+      <Navbar />
+      <Carousel images={carouselImages} />
       <div className="text-center text-white pt-4 font-bold tracking-wide">
         Game Cards
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 rid-cols-2 p-8">
-          {data &&
-            data.map((item) => (
+        <div className="grid md:grid-cols-3 lg:grid-cols-4 rid-cols-2 p-8 border border-black">
+          {itemsToDisplay &&
+            itemsToDisplay.map((item) => (
               <Card
                 key={item.item_id}
                 image={item.image_url}
@@ -33,6 +64,17 @@ function App() {
                 currency={item.unit_items[0].price.currency}
               />
             ))}
+        </div>
+        <div>
+          {Array.from({ length: totalPages }, (_, i) => (
+            <button
+              className="p-2 rounded-md hover:cursor-pointer"
+              key={i}
+              onClick={() => handlePageChange(i + 1)}
+            >
+              {i + 1}
+            </button>
+          ))}
         </div>
       </div>
     </div>
