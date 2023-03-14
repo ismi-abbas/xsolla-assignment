@@ -1,3 +1,7 @@
 .game-title {
   font-family: "Tilt Warp", cursive;
 }
+
+.buy-button {
+  @apply inline-flex items-center pl-2 text-sm font-medium text-start text-white rounded-full bg-slate-400 hover:bg-green-500 hover:cursor-pointer;
+}

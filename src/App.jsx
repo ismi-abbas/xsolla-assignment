@@ -34,7 +34,7 @@ function App() {
         }
       })
       .then((data) => {
-        setData(data.items.slice(0, 44));
+        setData(data.items);
         const images = data.items.slice(0, 4).map((item) => item.image_url);
         setCarouselImages([...images]);
       })
@@ -48,12 +48,13 @@ function App() {
   }, []);
 
   return (
-    <div className="bg-purple-800 h-auto p-10">
+    <div className="bg-purple-800 h-auto p-10 justify-items-center min-h-screen">
       <Navbar />
       <Carousel images={carouselImages} />
-      <div className="text-center text-white pt-4 font-bold tracking-wide">
+      
+      <div className="text-center text-white pt-4 font-bold tracking-wide border-2 border-black ">
         Game Cards
-        <div className="grid md:grid-cols-3 lg:grid-cols-4 rid-cols-2 p-8 border border-black">
+        <div className="grid grid-cols-4 m-2 border border-black">
           {itemsToDisplay &&
             itemsToDisplay.map((item) => (
               <Card
