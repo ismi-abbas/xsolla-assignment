@@ -23,6 +23,7 @@ function App() {
   };
 
   const setSearch = (searchKey) => {
+    setSearchTerm(searchKey);
     handleSearch(searchKey);
   };
 
@@ -59,6 +60,10 @@ function App() {
   useEffect(() => {
     fetchData();
   }, []);
+
+  useEffect(() => {
+    handleSearch(searchTerm);
+  }, [searchTerm]);
 
   return (
     <div className="bg-purple-800 p-10 min-h-screen item-center">
