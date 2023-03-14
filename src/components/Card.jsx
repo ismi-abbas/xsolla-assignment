@@ -17,7 +17,7 @@ const getCurrenySymbol = (currency) => {
 
 function Card({ title, image, description, currency, price, link }) {
   return (
-    <div className="justify-center pb-2 mt-4 w-auto border overflow-auto">
+    <div className="justify-center pb-2 mt-4 w-auto overflow-auto">
       {/* Image */}
       <div href="#" className="flex justify-center">
         <img className="object-cover h-60 w-60 mx-auto" src={image} alt="" />

@@ -14,6 +14,7 @@ function App() {
   const [searchTerm, setSearchTerm] = useState("");
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
+  const mobileLimit = 5;
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -38,7 +39,7 @@ function App() {
         }
       })
       .then((data) => {
-        console.log(data.items)
+        console.log(data.items);
         setData(data.items);
         const images = data.items.slice(0, 4).map((item) => item.image_url);
         setCarouselImages([...images]);
@@ -64,13 +65,13 @@ function App() {
   }, [searchTerm]);
 
   return (
-    <div className="bg-purple-800 p-10 item-center">
+    <div className="bg-purple-800 p-2 md:p-10 item-center">
       <Navbar setSearch={setSearch} />
       <Carousel images={carouselImages} />
 
       <div className="text-white pt-4 font-bold tracking-wide">
         <h2 className="game-title text-4xl text-center mt-5">Game Cards</h2>
-        <div className="px-20 pt-5 mx-20 justify-items-center">
+        <div className="px-5 md:px-10 xl:px-20 pt-5 mx-auto lg:mx-20 justify-items-center">
           <div className="flex flex-wrap basis-4 justify-center">
             {itemsToDisplay &&
               itemsToDisplay.map((item) => (
@@ -104,7 +105,7 @@ function App() {
             const page = i + 1;
             const startPage = Math.max(currentPage - 2, 1);
             const endPage = Math.min(currentPage + 2, totalPages);
-            const mobileLimit = 5;
+
             if (page < startPage || page > endPage) {
               return null;
             }
