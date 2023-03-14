@@ -1,3 +1,7 @@
+.body {
+  @apply flex flex-col items-center justify-center min-h-screen py-2;
+}
+
 .game-title {
   font-family: "Tilt Warp", cursive;
 }

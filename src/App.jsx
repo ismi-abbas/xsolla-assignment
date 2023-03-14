@@ -4,6 +4,7 @@ import Card from "./components/Card";
 import Navbar from "./components/Navbar";
 import Pagination from "./components/Pagination";
 import Carousel from "./components/Carousel";
+import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
 
 const API_URL =
   "https://store.xsolla.com/api/v2/project/36867/items/game?locale=en";
@@ -13,11 +14,16 @@ function App() {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(16);
   const [carouselImages, setCarouselImages] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const totalPages = Math.ceil(data.length / itemsPerPage);
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
+  };
+
+  const setSearch = (searchKey) => {
+    handleSearch(searchKey);
   };
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -43,41 +49,93 @@ function App() {
       });
   };
 
+  const handleSearch = (searchKey) => {
+    let filtered = data.filter((item) =>
+      item.name.toLowerCase().includes(searchKey.toLowerCase())
+    );
+    setData(filtered);
+  };
+
   useEffect(() => {
     fetchData();
   }, []);
 
   return (
-    <div className="bg-purple-800 h-auto p-10 justify-items-center min-h-screen">
-      <Navbar />
+    <div className="bg-purple-800 p-10 min-h-screen item-center">
+      <Navbar setSearch={setSearch} />
       <Carousel images={carouselImages} />
-      
-      <div className="text-center text-white pt-4 font-bold tracking-wide border-2 border-black ">
-        Game Cards
-        <div className="grid grid-cols-4 m-2 border border-black">
-          {itemsToDisplay &&
-            itemsToDisplay.map((item) => (
-              <Card
-                key={item.item_id}
-                image={item.image_url}
-                title={item.name}
-                price={item.unit_items[0].price.amount}
-                currency={item.unit_items[0].price.currency}
-              />
-            ))}
-        </div>
-        <div>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <button
-              className="p-2 rounded-md hover:cursor-pointer"
-              key={i}
-              onClick={() => handlePageChange(i + 1)}
-            >
-              {i + 1}
-            </button>
-          ))}
+
+      <div className="text-center text-white pt-4 font-bold tracking-wide">
+        <h2 className="game-title text-4xl">Game Cards</h2>
+        <div className="p-20 justify-items-center">
+          <div className="flex flex-wrap basis-4">
+            {itemsToDisplay &&
+              itemsToDisplay.map((item) => (
+                <Card
+                  key={item.item_id}
+                  image={item.image_url}
+                  title={item.name}
+                  price={item.unit_items[0].price.amount}
+                  currency={item.unit_items[0].price.currency}
+                />
+              ))}
+          </div>
         </div>
       </div>
+      {/* Pagination */}
+      <nav className="flex justify-center">
+        <ul className="flex flex-wrap items-center pb-4">
+          {currentPage > 1 && (
+            <li>
+              <a
+                onClick={() => handlePageChange(currentPage - 1)}
+                className="p-4 m-2"
+              >
+                <div className="ml-3 rounded-full p-2 bg-orange-500 hover:cursor-pointer text-white">
+                  <AiOutlineArrowLeft className="bg-orange-500" size={20} />
+                </div>
+              </a>
+            </li>
+          )}
+          {Array.from({ length: totalPages }, (_, i) => {
+            const page = i + 1;
+            const startPage = Math.max(currentPage - 2, 1);
+            const endPage = Math.min(currentPage + 2, totalPages);
+
+            if (page < startPage || page > endPage) {
+              return null;
+            }
+
+            return (
+              <li key={i}>
+                <a
+                  onClick={() => handlePageChange(page)}
+                  className={`p-4 leading-tight m-2 rounded-full hover:cursor-pointer ${
+                    currentPage === page
+                      ? "bg-orange-500 text-white"
+                      : "bg-slate-400"
+                  }`}
+                >
+                  {page}
+                </a>
+              </li>
+            );
+          })}
+
+          {currentPage < totalPages && (
+            <li>
+              <a
+                onClick={() => handlePageChange(currentPage + 1)}
+                className="p-4 leading-tight m-2"
+              >
+                <div className="ml-3 rounded-full p-2 bg-orange-500 hover:cursor-pointer text-white">
+                  <AiOutlineArrowRight className="bg-orange-500" size={20} />
+                </div>
+              </a>
+            </li>
+          )}
+        </ul>
+      </nav>
     </div>
   );
 }
