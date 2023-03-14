@@ -5,9 +5,7 @@ import Navbar from "./components/Navbar";
 import Pagination from "./components/Pagination";
 import Carousel from "./components/Carousel";
 import { AiOutlineArrowRight, AiOutlineArrowLeft } from "react-icons/ai";
-
-const API_URL =
-  "https://store.xsolla.com/api/v2/project/36867/items/game?locale=en";
+import { XSOLLA_API } from "../constants/apis";
 
 function App() {
   const [data, setData] = useState([]);
@@ -32,7 +30,7 @@ function App() {
   const itemsToDisplay = data.slice(startIndex, endIndex);
 
   const fetchData = () => {
-    fetch(API_URL)
+    fetch(XSOLLA_API)
       .then((response) => {
         if (response.ok) {
           return response.json();
