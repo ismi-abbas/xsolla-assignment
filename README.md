@@ -1,4 +1,4 @@
-# Xsolla Game List Website - Assingment
+# Xsolla Game List Website - Assignment
 
 This app use [Vite]('https://vitejs.dev/') to scaffold react app for faster development process.
 
@@ -30,9 +30,3 @@ npm run build
 ```
 
 This will create an optimized version of your project in the dist/ directory.
-
-## Deploying your project
-
-You can deploy your project on any static file host. You can also deploy it to platforms such as Netlify, Vercel or Amazon S3.
-
-That's it! You are ready to start building with Vite. Good luck with your project!
