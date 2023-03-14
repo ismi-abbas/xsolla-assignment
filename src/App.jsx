@@ -66,14 +66,14 @@ function App() {
   }, [searchTerm]);
 
   return (
-    <div className="bg-purple-800 p-10 min-h-screen item-center">
+    <div className="bg-purple-800 p-10 item-center">
       <Navbar setSearch={setSearch} />
       <Carousel images={carouselImages} />
 
-      <div className="text-center text-white pt-4 font-bold tracking-wide">
-        <h2 className="game-title text-4xl">Game Cards</h2>
-        <div className="p-20 justify-items-center">
-          <div className="flex flex-wrap basis-4">
+      <div className="text-white pt-4 font-bold tracking-wide">
+        <h2 className="game-title text-4xl text-center mt-5">Game Cards</h2>
+        <div className="px-20 pt-5 mx-20 justify-items-center">
+          <div className="flex flex-wrap basis-4 justify-center">
             {itemsToDisplay &&
               itemsToDisplay.map((item) => (
                 <Card
@@ -88,8 +88,8 @@ function App() {
         </div>
       </div>
       {/* Pagination */}
-      <nav className="flex justify-center">
-        <ul className="flex flex-wrap items-center pb-4">
+      <nav className="flex justify-items-center justify-center">
+        <ul className="grid md:grid-cols-7 grid-cols-2 items-center pb-4">
           {currentPage > 1 && (
             <li>
               <a
@@ -106,7 +106,7 @@ function App() {
             const page = i + 1;
             const startPage = Math.max(currentPage - 2, 1);
             const endPage = Math.min(currentPage + 2, totalPages);
-
+            const mobileLimit = 5;
             if (page < startPage || page > endPage) {
               return null;
             }
@@ -119,7 +119,7 @@ function App() {
                     currentPage === page
                       ? "bg-orange-500 text-white"
                       : "bg-slate-400"
-                  }`}
+                  } ${mobileLimit < totalPages ? "hidden md:block" : ""}`}
                 >
                   {page}
                 </a>
